@@ -6,10 +6,10 @@ pipeline {
     }
 
     environment {
-        PROJECT_ID = "your-gcp-project-id"
+        PROJECT_ID = "di-gcp-351221"
         REGION = "us-central1"
         SERVICE = "nodejs-demo-service"
-        IMAGE = "gcr.io/${PROJECT_ID}/${SERVICE}"
+        IMAGE = "gcr.io/${di-gcp-351221}/${jenkins-deploy-service}"
     }
 
     stages {
