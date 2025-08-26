@@ -19,23 +19,35 @@
 
 #echo "✅ Deployment complete. Access your app via the VM's external IP."
 
+#!/bin/bash
+APP_DIR=~/app
+SERVER_FILE="$APP_DIR/server.js"
 
-set -e
+echo "🚀 Starting deployment script..."
 
-echo "🚀 Starting deployment..."
-
-cd ~/app || exit 1
-
-# Install dependencies only if package.json exists
-if [ -f "package.json" ]; then
-  echo "📦 Installing npm dependencies..."
-  npm install --production
+# Navigate to app directory
+if [ -d "$APP_DIR" ]; then
+    cd "$APP_DIR" || { echo "❌ Cannot enter $APP_DIR"; exit 1; }
 else
-  echo "⚠️ No package.json found, skipping npm install"
+    echo "❌ App directory $APP_DIR does not exist. Exiting."
+    exit 1
 fi
 
-# Restart app
-echo "🔄 Restarting app with PM2..."
-pm2 delete all || true
-pm2 start server.js --name my-app
+# Install npm dependencies
+if [ -f package.json ]; then
+    echo "📦 Installing npm dependencies..."
+    npm install || echo "⚠️ npm install encountered issues. Continuing..."
+else
+    echo "⚠️ package.json not found. Skipping npm install."
+fi
 
+# Check for server.js before starting with PM2
+if [ -f "$SERVER_FILE" ]; then
+    echo "🔄 Restarting app with PM2..."
+    pm2 stop server.js 2>/dev/null || true
+    pm2 start server.js || echo "⚠️ PM2 failed to start server.js"
+else
+    echo "⚠️ server.js not found. Skipping PM2 start."
+fi
+
+echo "✅ Deployment script finished."
