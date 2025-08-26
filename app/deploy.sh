@@ -12,5 +12,9 @@ sudo rm -rf /var/www/html/*
 
 echo "📂 Deploying new files..."
 sudo cp -r ~/app/* /var/www/html/
+echo "install npm packages"
+npm install
+echo "start npm server"
+HOST=0.0.0.0 npm start
 
 echo "✅ Deployment complete. Access your app via the VM's external IP."
