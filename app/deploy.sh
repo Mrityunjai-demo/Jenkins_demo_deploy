@@ -18,8 +18,8 @@
 #HOST=0.0.0.0 npm start
 
 #echo "✅ Deployment complete. Access your app via the VM's external IP."
-#!/bin/bash
-#!/bin/bash
+
+
 set -e
 
 echo "🚀 Starting deployment..."
